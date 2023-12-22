@@ -2,6 +2,7 @@ import datetime as dt
 import urllib.parse
 import urllib3
 import aiohttp
+import os
 
 class ETL:
 
@@ -9,7 +10,8 @@ class ETL:
         self.pjm_api_key = os.getenv("PJM_API_KEY")
         self.pi_user = os.getenv("PI_USER")
         self.pi_password = os.getenv("PI_PASSWORD")
-        self.pjm_headers = { "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36","ACCEPT-ENCODING": "gzip, deflate, br","Ocp-Apim-Subscription-Key":"bfd48ff08f354ac4afea943fe3f00dcc"}
+        self.pjm_headers = { "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36",
+                            "ACCEPT-ENCODING": "gzip, deflate, br","Ocp-Apim-Subscription-Key":"bfd48ff08f354ac4afea943fe3f00dcc"}
         self.pi_headers = {"Content-type": "application/json", "X-Requested-With": "XmlHttpRequest"}
         self.url_prefix = "https://api.pjm.com/api/v1/rt_unverified_fivemin_lmps?pnode_id="
     

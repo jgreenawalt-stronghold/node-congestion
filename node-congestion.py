@@ -1,9 +1,7 @@
 import aiohttp
 import asyncio
-import json
 from etl import ETL
 from dotenv import load_dotenv
-import os
 
 load_dotenv()
 
