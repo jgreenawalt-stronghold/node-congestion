@@ -1,7 +1,7 @@
+import aiohttp
 import datetime as dt
 import urllib.parse
 import urllib3
-import aiohttp
 import os
 
 class ETL:
@@ -25,11 +25,9 @@ class ETL:
     async def extract_lmp(self, url, session):
         try:
             async with session.get(url, headers=self.pjm_headers) as response:
-                data = []
                 if response.status == 200:
                     r = await response.json(content_type="application/octet-stream")
-                    data.append(r[0]["total_lmp_rt"])
-                return data
+                    return r[0]["total_lmp_rt"]
         except Exception as e:
             print(e)
 

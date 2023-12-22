@@ -1,10 +1,3 @@
-import aiohttp
-import asyncio
-from etl import ETL
-from dotenv import load_dotenv
-
-load_dotenv()
-
 class Node:
     node_data = [
             {"name":"BURMA   138 KV  MAHOCHYD","pnode_id": 1132293724,"tag": "PJMBurmaLMP","web_id":"F1DP2D-mFxStdkup8XJDcSGY4AIwwAAAU0NSUElQMDFcUEpNQlVSTUFMTVA"},
@@ -20,20 +13,3 @@ class Node:
         self.pnode_id = pnode_id
         self.tag = tag
         self.web_id = web_id
-
-
-async def main():
-    async with aiohttp.ClientSession() as session:
-        etl = ETL()
-        nodes = [Node(**obj) for obj in Node.node_data]
-    
-        extract_tasks = [etl.extract_lmp(f"{etl.url_prefix}{node.pnode_id}{etl.get_pjm_params()}", session) for node in nodes]
-        extracted_prices = await asyncio.gather(*extract_tasks)
-
-        load_tasks = [etl.load_pi(node, data, session) for node, data in zip(nodes, extracted_prices)]
-        loaded_price = await asyncio.gather(*load_tasks)
-
-if __name__ == "__main__":
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
-
