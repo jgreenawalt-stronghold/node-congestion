@@ -12,10 +12,10 @@ async def main():
         etl = ETL()
         nodes = [Node(**obj) for obj in Node.node_data]
     
-        extract_tasks = [etl.extract_lmp(f"{etl.url_prefix}{node.pnode_id}{etl.get_pjm_params()}", session) for node in nodes]
+        extract_tasks = [etl.extract_lmp(f"{etl.pjm_url_prefix}{node.pnode_id}&{etl.get_pjm_params()}", session) for node in nodes]
         extracted_prices = await asyncio.gather(*extract_tasks)
 
-        load_tasks = [etl.load_pi(node, data, session) for node, data in zip(nodes, extracted_prices)]
+        load_tasks = [etl.load_pi(f"{etl.pi_url}{node.tag}", data, session) for node, data in zip(nodes, extracted_prices)]
         loaded_price = await asyncio.gather(*load_tasks)
 
 if __name__ == "__main__":
